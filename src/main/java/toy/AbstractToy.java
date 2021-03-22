@@ -21,7 +21,7 @@ public abstract class AbstractToy {
 
     @Override
     public String toString() {
-        return "Toy type: " + this.getClass().getName()
+        return "Toy type: " + this.getClass().getName().split("\\.")[1]
                 + "\nToy cost: " + this.getCost()
                 + "\nToy size: " + this.getToySize() + "\n";
     }
