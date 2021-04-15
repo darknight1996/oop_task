@@ -19,9 +19,13 @@ public abstract class AbstractToy {
         return cost;
     }
 
+    public String getType() {
+        return this.getClass().getName().split("\\.")[1];
+    }
+
     @Override
     public String toString() {
-        return "Toy type: " + this.getClass().getName().split("\\.")[1]
+        return "Toy type: " + this.getType()
                 + "\nToy cost: " + this.getCost()
                 + "\nToy size: " + this.getToySize() + "\n";
     }

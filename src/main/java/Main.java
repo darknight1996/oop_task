@@ -7,6 +7,7 @@ import util.ToyConverter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
@@ -49,13 +50,32 @@ public class Main {
                 if (playroom.getName().equals(roomName)) {
                     try {
                         playroom.setChild(child);
+
+                        // ---- toys sort -----
+                        System.out.println("Enter sort parameter('cost', 'type', 'size'): ");
+                        String sortParameter = bufferedReader.readLine();
+                        switch (sortParameter) {
+                            case ("cost"):
+                                playroom.getToys().sort(Comparator.comparing(AbstractToy::getCost));
+                                break;
+                            case ("type"):
+                                playroom.getToys().sort(Comparator.comparing(AbstractToy::getType));
+                                break;
+                            case ("size"):
+                                playroom.getToys().sort(Comparator.comparing(AbstractToy::getToySize));
+                                break;
+                            default:
+                                throw new Exception("Invalid sort parameter!");
+                        }
+                        System.out.println("Sorted toys:");
+                        playroom.getToys().forEach(System.out::println);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
 
-            System.out.println("type 'exit' to exit or press enter to continue");
+            System.out.println("type 'exit' to exit or any to continue");
             exit = bufferedReader.readLine().equalsIgnoreCase("exit");
         }
 
