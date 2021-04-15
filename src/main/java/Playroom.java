@@ -18,9 +18,12 @@ public class Playroom {
         this.toys = toys;
     }
 
+    private int getAvgToysPrice() {
+        return toys.stream().mapToInt(AbstractToy::getCost).sum() / toys.size();
+    }
+
     private boolean isEnoughMoney(int money) {
-        int avgToysPrice = toys.stream().mapToInt(AbstractToy::getCost).sum() / toys.size();
-        return (money >= avgToysPrice);
+        return (money >= getAvgToysPrice());
     }
 
     private boolean isValidAge(int age) {
@@ -63,9 +66,16 @@ public class Playroom {
 
     @Override
     public String toString() {
-        return "Playroom{" +
-                "name='" + name + '\'' +
-                ", toys=" + toys +
-                '}';
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("Playroom: ").append(name).append("\n");
+        stringBuffer.append("Min age: ").append(minAge).append("\n");
+        stringBuffer.append("Avg toys price: ").append(getAvgToysPrice()).append("\n");
+        stringBuffer.append("Toys: ").append("\n");
+        toys.forEach(toy -> {
+            stringBuffer.append("----------").append("\n");
+            stringBuffer.append(toy);
+        });
+        return stringBuffer.toString();
+
     }
 }

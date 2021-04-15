@@ -7,9 +7,7 @@ import util.ToyConverter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Main {
 
@@ -27,30 +25,39 @@ public class Main {
         playrooms.add(new Playroom("room3", 5, toys.subList(6, 9)));
 
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        boolean exit = false;
+        while (!exit) {
+            // ----- enter child data -----
+            System.out.println("Enter child name: ");
+            String childName = bufferedReader.readLine();
+            System.out.println("Enter child age: ");
+            int childAge = Integer.parseInt(bufferedReader.readLine());
+            System.out.println("Enter child money: ");
+            int childMoney = Integer.parseInt(bufferedReader.readLine());
+            Child child = new Child(childName, childAge, childMoney);
 
-        // ----- enter child data -----
-        System.out.println("Enter child name: ");
-        String childName = bufferedReader.readLine();
-        System.out.println("Enter child age: ");
-        int childAge = Integer.parseInt(bufferedReader.readLine());
-        System.out.println("Enter child money: ");
-        int childMoney = Integer.parseInt(bufferedReader.readLine());
-        Child child = new Child(childName, childAge, childMoney);
+            // ----- print available rooms -----
+            playrooms.forEach(System.out::println);
+            // ----- select a room -----
+            System.out.println("Enter room name: ");
+            String roomName = bufferedReader.readLine();
+            if (playrooms.stream().noneMatch(room -> room.getName().equals(roomName))) {
+                throw new Exception("Invalid room name!");
+            }
 
-        // ----- print available rooms -----
-        playrooms.forEach(System.out::println);
-        // ----- select a room -----
-        System.out.println("Enter room name: ");
-        String roomName = bufferedReader.readLine();
-        playrooms.forEach(playroom -> {
-            if (playroom.getName().equals(roomName)) {
-                try {
-                    playroom.setChild(child);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            for (Playroom playroom : playrooms) {
+                if (playroom.getName().equals(roomName)) {
+                    try {
+                        playroom.setChild(child);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        });
+
+            System.out.println("type 'exit' to exit or press enter to continue");
+            exit = bufferedReader.readLine().equalsIgnoreCase("exit");
+        }
 
     }
 
