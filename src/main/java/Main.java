@@ -1,32 +1,57 @@
 import repository.ToyRepository;
-import repository.impl.CSVToyRepository;
-import toy.AbstractToy;
-import util.ReaderCSV;
-import util.ToyConverter;
+import repository.impl.FileToyRepository;
+import toy.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
 
-        ReaderCSV reader = new ReaderCSV();
-        ToyConverter converter = new ToyConverter();
-        ToyRepository toyRepository = new CSVToyRepository(reader, converter);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            System.out.println("Enter role (client, owner):");
+            String role = bufferedReader.readLine();
+            if (role.equals("client")) {
+                clientWorkflow(bufferedReader);
+            } else if (role.equals("owner")) {
+                ownerWorkflow(bufferedReader);
+            } else {
+                throw new Exception("Invalid role!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            bufferedReader.close();
+        }
+
+    }
+
+    private static void clientWorkflow(BufferedReader bufferedReader) throws Exception {
+        ToyRepository toyRepository = new FileToyRepository();
         List<AbstractToy> toys = toyRepository.getToys();
 
         // ----- create rooms -----
         List<Playroom> playrooms = new ArrayList<>();
-        playrooms.add(new Playroom("room1", 3, toys.subList(0, 3)));
-        playrooms.add(new Playroom("room2", 4, toys.subList(3, 6)));
-        playrooms.add(new Playroom("room3", 5, toys.subList(6, 9)));
+        playrooms.add(new Playroom("room1", 3, new ArrayList<>()));
+        playrooms.add(new Playroom("room2", 4, new ArrayList<>()));
+        playrooms.add(new Playroom("room3", 5, new ArrayList<>()));
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        int i = 0;
+        for (AbstractToy toy : toys) {
+            playrooms.get(i).getToys().add(toy);
+            if (i == 2) {
+                i = 0;
+            } else {
+                i++;
+            }
+        }
+
         boolean exit = false;
+
         while (!exit) {
             // ----- enter child data -----
             System.out.println("Enter child name: ");
@@ -78,7 +103,54 @@ public class Main {
             System.out.println("type 'exit' to exit or any to continue");
             exit = bufferedReader.readLine().equalsIgnoreCase("exit");
         }
+    }
 
+    private static void ownerWorkflow(BufferedReader bufferedReader) throws Exception {
+        ToyRepository toyRepository = new FileToyRepository();
+
+        boolean exit = false;
+
+        while (!exit) {
+            System.out.println("Enter action(add toy, show toys):");
+            String action = bufferedReader.readLine();
+            switch (action) {
+                case ("add toy"):
+                    System.out.println("Enter toy type (Ball, Car, Cubes, Doll):");
+                    String toyType = bufferedReader.readLine();
+                    System.out.println("Enter toy size (SMALL, MEDIUM, LARGE):");
+                    ToySize toySize = ToySize.valueOf(bufferedReader.readLine());
+                    System.out.println("Enter toy cost:");
+                    int toyCost = Integer.parseInt(bufferedReader.readLine());
+                    AbstractToy newToy = null;
+                    switch (toyType) {
+                        case ("Ball"):
+                            newToy = new Ball(toySize, toyCost);
+                            break;
+                        case ("Car"):
+                            newToy = new Car(toySize, toyCost);
+                            break;
+                        case ("Cubes"):
+                            newToy = new Cubes(toySize, toyCost);
+                            break;
+                        case ("Doll"):
+                            newToy = new Doll(toySize, toyCost);
+                            break;
+                    }
+                    List<AbstractToy> toys = toyRepository.getToys();
+                    toys.add(newToy);
+                    toyRepository.updateToys(toys);
+                    break;
+                case ("show toys"):
+                    toyRepository.reload();
+                    System.out.println(toyRepository.getToys());
+                    break;
+                default:
+                    throw new Exception("Invalid action!");
+            }
+
+            System.out.println("type 'exit' to exit or any to continue");
+            exit = bufferedReader.readLine().equalsIgnoreCase("exit");
+        }
     }
 
 }

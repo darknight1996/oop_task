@@ -1,6 +1,8 @@
 package toy;
 
-public abstract class AbstractToy {
+import java.io.Serializable;
+
+public abstract class AbstractToy implements Serializable {
 
     private final ToySize toySize;
 

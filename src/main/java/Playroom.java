@@ -1,3 +1,5 @@
+import exception.NotEnoughAgeException;
+import exception.NotEnoughMoneyException;
 import toy.AbstractToy;
 
 import java.util.List;
@@ -12,7 +14,7 @@ public class Playroom {
 
     private Child child;
 
-    public Playroom(String name, int minAge, List<AbstractToy> toys) throws Exception {
+    public Playroom(String name, int minAge, List<AbstractToy> toys) {
         this.name = name;
         this.minAge = minAge;
         this.toys = toys;
@@ -40,16 +42,15 @@ public class Playroom {
     }
 
     public void setChild(Child child) throws Exception {
-        String NOT_ENOUGH_MONEY_EXCEPTION = "Not enough money!";
-        String NOT_ENOUGH_AGE_EXCEPTION = "Not enough age!";
+
         String SUCCESS = "You have successfully entered the room";
 
         if (!isEnoughMoney(child.getMoney())) {
-            throw new Exception(NOT_ENOUGH_MONEY_EXCEPTION);
+            throw new NotEnoughMoneyException();
         }
 
         if (!isValidAge(child.getAge())) {
-            throw new Exception(NOT_ENOUGH_AGE_EXCEPTION);
+            throw new NotEnoughAgeException();
         }
 
         System.out.println(SUCCESS);
