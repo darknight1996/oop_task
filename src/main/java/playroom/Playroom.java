@@ -1,3 +1,6 @@
+package playroom;
+
+import child.Child;
 import exception.NotEnoughAgeException;
 import exception.NotEnoughMoneyException;
 import toy.AbstractToy;
@@ -68,7 +71,7 @@ public class Playroom {
     @Override
     public String toString() {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("Playroom: ").append(name).append("\n");
+        stringBuffer.append("playroom.Playroom: ").append(name).append("\n");
         stringBuffer.append("Min age: ").append(minAge).append("\n");
         stringBuffer.append("Avg toys price: ").append(getAvgToysPrice()).append("\n");
         stringBuffer.append("Toys: ").append("\n");
@@ -78,5 +81,12 @@ public class Playroom {
         });
         return stringBuffer.toString();
 
+    }
+
+    public String treeContent() {
+        String stringBuffer = name +
+                ", min age: " + minAge +
+                ", avg toys price: " + getAvgToysPrice();
+        return stringBuffer;
     }
 }

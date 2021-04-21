@@ -1,3 +1,5 @@
+package child;
+
 public class Child {
 
     private String name;
