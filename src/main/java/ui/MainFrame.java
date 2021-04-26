@@ -9,11 +9,6 @@ public class MainFrame extends DefaultFrame {
     }
 
     private void init() {
-        this.setSize(400, 400);
-        this.setLocation(600, 300);
-        JPanel panel = new JPanel();
-        this.getContentPane().add(panel);
-
         // create buttons
         JButton clientButton = new JButton("Enter as a client");
         clientButton.addActionListener(e -> {
