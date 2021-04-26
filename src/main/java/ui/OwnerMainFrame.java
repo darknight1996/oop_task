@@ -76,6 +76,7 @@ public class OwnerMainFrame extends RoomsFrame {
         toyRepository.updateToys(toys);
 
         initRooms();
+        JOptionPane.showMessageDialog(this, "You have successfully added the toy");
     }
 
 }
