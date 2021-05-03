@@ -5,9 +5,10 @@ import exception.NotEnoughAgeException;
 import exception.NotEnoughMoneyException;
 import toy.AbstractToy;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Playroom {
+public class Playroom implements Serializable {
 
     private final String name;
 
