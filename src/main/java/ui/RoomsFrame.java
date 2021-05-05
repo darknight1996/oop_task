@@ -1,8 +1,8 @@
 package ui;
 
 import playroom.Playroom;
-import repository.ToyRepository;
-import repository.impl.FileToyRepository;
+import repository.PlayroomRepository;
+import repository.impl.FilePlayroomRepository;
 import toy.AbstractToy;
 
 import javax.swing.*;
@@ -22,24 +22,8 @@ public class RoomsFrame extends DefaultFrame {
     }
 
     void initRooms() {
-        ToyRepository toyRepository = new FileToyRepository();
-        List<AbstractToy> toys = toyRepository.getToys();
-
-        // ----- create rooms -----
-        playrooms = new ArrayList<>();
-        playrooms.add(new Playroom("room1", 3, new ArrayList<>()));
-        playrooms.add(new Playroom("room2", 4, new ArrayList<>()));
-        playrooms.add(new Playroom("room3", 5, new ArrayList<>()));
-
-        int i = 0;
-        for (AbstractToy toy : toys) {
-            playrooms.get(i).getToys().add(toy);
-            if (i == 2) {
-                i = 0;
-            } else {
-                i++;
-            }
-        }
+        PlayroomRepository playroomRepository = new FilePlayroomRepository();
+        playrooms = playroomRepository.getPlayrooms();
 
         // create rooms tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("rooms");
@@ -47,7 +31,8 @@ public class RoomsFrame extends DefaultFrame {
             DefaultMutableTreeNode playroomNode = new DefaultMutableTreeNode(playroom.treeContent());
             for (AbstractToy toy : playroom.getToys()) {
                 playroomNode.add(new DefaultMutableTreeNode(
-                        toy.getType()
+                        toy.getId()
+                                + ", " + toy.getType()
                                 + ", toy cost: " + toy.getCost()
                                 + ", toy size: " + toy.getToySize()
                 ));

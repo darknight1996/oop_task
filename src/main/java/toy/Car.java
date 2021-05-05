@@ -2,8 +2,8 @@ package toy;
 
 public class Car extends AbstractToy {
 
-    public Car(ToySize toySize, int cost) {
-        super(toySize, cost);
+    public Car(int id, ToySize toySize, int cost) {
+        super(id, toySize, cost);
     }
 
 }

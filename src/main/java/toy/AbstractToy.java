@@ -4,13 +4,20 @@ import java.io.Serializable;
 
 public abstract class AbstractToy implements Serializable {
 
+    private final int id;
+
     private final ToySize toySize;
 
     private final int cost;
 
-    public AbstractToy(ToySize toySize, int cost) {
+    public AbstractToy(int id, ToySize toySize, int cost) {
+        this.id = id;
         this.toySize = toySize;
         this.cost = cost;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public ToySize getToySize() {
